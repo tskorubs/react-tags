@@ -37,9 +37,7 @@ export interface ReactTagsProps {
   autocomplete?: boolean | 1 | undefined;
   readOnly?: boolean | undefined;
   resetInputOnDelete?: boolean | undefined;
-  onTagUpdate:
-    | ((i: number, tag: { id: string, text: string }) => void)
-    | undefined;
+  onTagUpdate?: ((i: number, tag: { id: string, text: string }) => void) | undefined;
 
   name?: string | undefined;
   id?: string | undefined;
@@ -50,6 +48,7 @@ export interface ReactTagsProps {
   inputFieldPosition?: 'top' | 'bottom' | 'inline' | undefined;
   allowUnique?: boolean | undefined;
   allowDragDrop?: boolean | undefined;
+  editable?: boolean | undefined;
   renderSuggestion?:
     | ((tag: Tag, query: string) => React.ReactChild | void)
     | undefined;
