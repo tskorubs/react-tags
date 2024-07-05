@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+
 import PropTypes from 'prop-types';
-import isEqual from 'lodash/isEqual';
 import escape from 'lodash/escape';
+import isEqual from 'lodash/isEqual';
 
 const maybeScrollSuggestionIntoView = (suggestionEl, suggestionsContainer) => {
   const containerHeight = suggestionsContainer.offsetHeight;
@@ -73,11 +74,15 @@ class Suggestions extends Component {
     const escapedRegex = query.trim().replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
     const { [this.props.labelField]: labelValue } = input;
 
-    return {
-      __html: labelValue.replace(RegExp(escapedRegex, 'gi'), (x) => {
-        return `<mark>${escape(x)}</mark>`;
-      }),
-    };
+    const parts = labelValue.split(RegExp(`(${escapedRegex})`, 'gi'));
+
+    return parts.map((part, index) =>
+      RegExp(escapedRegex, 'i').test(part) ? (
+        <mark key={index}>{escape(part)}</mark>
+      ) : (
+        escape(part)
+      )
+    );
   };
 
   shouldRenderSuggestions = (query) => {
@@ -90,7 +95,7 @@ class Suggestions extends Component {
     if (typeof renderSuggestion === 'function') {
       return renderSuggestion(item, query);
     }
-    return <span dangerouslySetInnerHTML={this.markIt(item, query)} />;
+    return <span>{this.markIt(item, query)}</span>;
   };
 
   render() {
